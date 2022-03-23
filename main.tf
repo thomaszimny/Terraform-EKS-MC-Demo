@@ -45,13 +45,13 @@ resource "aws_route_table" "MC-Route-Table" {
 
 resource "aws_route" "MC-Route" {
   route_table_id = "MC-Route-Table"
-  cidr_block = "0.0.0.0/0"
+  destination_cidr_block = "0.0.0.0/0"
   gateway_id = aws_internet_gateway.MC-Gateway.id
 }
 
 resource "aws_route" "MC-Route-ipv6" {
   route_table_id         = "MC-Route-Table"
-  ipv6_cidr_block        = "::/0"
+  destination_ipv6_cidr_block        = "::/0"
   gateway_id = aws_internet_gateway.MC-Gateway.id
 }
 
@@ -81,7 +81,6 @@ resource "aws_security_group" "MC-Security-Group" {
 }
 
 resource "aws_security_group_rule" "MC-Allow-HTTPS-Web" {
-  name              = "Allow-HTTPS-Web-Traffic"
   description       = "Allow Inbound HTTPS Web Traffic"
   type              = "ingress"
   from_port         = 443
@@ -93,7 +92,6 @@ resource "aws_security_group_rule" "MC-Allow-HTTPS-Web" {
 }
 
 resource "aws_security_group_rule" "MC-Allow-HTTP-Web" {
-  name              = "Allow-HTTP-Web-Traffic"
   description       = "Allow Inbound HTTP Web Traffic"
   type              = "ingress"
   from_port         = 80
@@ -105,7 +103,6 @@ resource "aws_security_group_rule" "MC-Allow-HTTP-Web" {
 }
 
 resource "aws_security_group_rule" "MC-Allow-SSH-Web" {
-  name              = "Allow-Web-Traffic"
   description       = "Allow Inbound SSH Web Traffic"
   type              = "ingress"
   from_port         = 22
@@ -117,7 +114,6 @@ resource "aws_security_group_rule" "MC-Allow-SSH-Web" {
 }
 
 resource "aws_security_group_rule" "MC-Outbound-ipv6" {
-  name              = "Allow-Outbound-Traffic"
   description       = "Allow Outbound Traffic"
   type              = "egress"
   from_port         = 0
