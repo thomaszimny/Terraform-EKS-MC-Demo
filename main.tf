@@ -44,15 +44,17 @@ resource "aws_route_table" "MC-Route-Table" {
 }
 
 resource "aws_route" "MC-Route" {
-  route_table_id = "MC-Route-Table"
+  route_table_id = aws_route_table.MC-Route-Table.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = aws_internet_gateway.MC-Gateway.id
+  depends_on = [aws_route_table.MC-Route-Table]
 }
 
 resource "aws_route" "MC-Route-ipv6" {
-  route_table_id         = "MC-Route-Table"
+  route_table_id         = aws_route_table.MC-Route-Table.id
   destination_ipv6_cidr_block        = "::/0"
   gateway_id = aws_internet_gateway.MC-Gateway.id
+  depends_on = [aws_route_table.MC-Route-Table]
 }
 
 resource "aws_subnet" "MC-Subnet-1" {
@@ -126,14 +128,14 @@ resource "aws_security_group_rule" "MC-Outbound-ipv6" {
 
 resource "aws_network_interface" "MC-NIC" {
   subnet_id       = aws_subnet.MC-Subnet-1.id
-  private_ips     = ["10.0.0.50"]
+  private_ips     = ["10.0.1.50"]
   security_groups = [aws_security_group.MC-Security-Group.id]
 }
 
 resource "aws_eip" "one" {
   vpc                       = true
   network_interface         = aws_network_interface.MC-NIC.id
-  associate_with_private_ip = "10.0.0.50"
+  associate_with_private_ip = "10.0.1.50"
   depends_on = [aws_internet_gateway.MC-Gateway]
 }
 
