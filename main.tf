@@ -1,5 +1,10 @@
-provider "aws" {
+variable "region" {
+  default = "us-east-1"
+  description = "AWS region"
+}
 
+provider "aws" {
+  region = var.region
   # Authentication
     # Use AWS configure to store credential information at "~/.aws/credentials"
     # Reference Link (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
@@ -7,17 +12,23 @@ provider "aws" {
     
 }
 
-variable "region" {
-  default = "us-east-1"
-  description = "AWS region"
+data "aws_availability_zones" "available" {}
+
+locals {
+  cluster_name = "education-eks-${random_string.suffix.result}"
 }
 
-resource "aws_vpc" "MC-EKS-VPC" {
-  cidr_block = "10.0.0.0/16"
-  tags = {
-    Name = "MC-EKS-VPC"
-  }
+resource "random_string" "suffix" {
+  length  = 8
+  special = false
 }
+
+# resource "aws_vpc" "MC-EKS-VPC" {
+#   cidr_block = "10.0.0.0/16"
+#   tags = {
+#     Name = "MC-EKS-VPC"
+#   }
+# }
 
 resource "aws_internet_gateway" "MC-Gateway" {
   vpc_id = aws_vpc.MC-EKS-VPC.id
