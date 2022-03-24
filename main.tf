@@ -1,23 +1,15 @@
-
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "4.6.0"
-    }
-  }
-}
-
 provider "aws" {
-
-  # Configuration options
-  region = "us-east-1"
 
   # Authentication
     # Use AWS configure to store credential information at "~/.aws/credentials"
     # Reference Link (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
   shared_credentials_files = [ "~/.aws/credentials" ]
     
+}
+
+variable "region" {
+  default = "us-east-1"
+  description = "AWS region"
 }
 
 resource "aws_vpc" "MC-EKS-VPC" {
@@ -163,11 +155,7 @@ resource "aws_instance" "Minecraft-Server" {
     }
 }
 
-# module "eks" {
-#   source  = "terraform-aws-modules/eks/aws"
-#   version = "18.11.0"
-#   # insert the 15 required variables here
-# }
+
 
 
 

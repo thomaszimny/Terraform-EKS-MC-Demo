@@ -11,3 +11,9 @@
 # Sensitive Data
 *.tfvars
 
+# Override Files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
